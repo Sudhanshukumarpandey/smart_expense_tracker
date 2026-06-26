@@ -132,15 +132,19 @@ def register():
 
         hashed_password = generate_password_hash(password)
 
-        create_user(
+        success = create_user(
             full_name,
             email,
             hashed_password
         )
 
-        flash("Registration successful. Please login.", "success")
+        if success:
+            flash("Registration successful. Please login.", "success")
+            return redirect(url_for("auth.login"))
+        else:
+            flash("Unable to create account due to database error. Please try again.", "danger")
+            return render_template("register.html")
 
-        return redirect(url_for("auth.login"))
 
     return render_template("register.html")
 

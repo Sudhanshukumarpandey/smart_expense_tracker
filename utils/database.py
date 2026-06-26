@@ -47,6 +47,7 @@ def get_connection():
                 autocommit=False
             )
 
+
         if connection.is_connected():
             return connection
 
@@ -59,4 +60,4 @@ def get_connection():
         print(e)
         print("=" * 60)
 
-        raise
+        raise
