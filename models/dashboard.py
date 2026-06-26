@@ -5,9 +5,12 @@ from utils.database import get_connection
 # DASHBOARD STATISTICS
 # ==========================
 
-def get_dashboard_stats(user_id):
+def get_dashboard_stats(user_id, connection=None):
+    should_close = False
+    if connection is None:
+        connection = get_connection()
+        should_close = True
 
-    connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
     try:
@@ -90,18 +93,21 @@ def get_dashboard_stats(user_id):
         }
 
     finally:
-
         cursor.close()
-        connection.close()
+        if should_close:
+            connection.close()
 
 
 # ==========================
 # RECENT TRANSACTIONS
 # ==========================
 
-def get_recent_transactions(user_id):
+def get_recent_transactions(user_id, connection=None):
+    should_close = False
+    if connection is None:
+        connection = get_connection()
+        should_close = True
 
-    connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
     try:
@@ -128,18 +134,21 @@ def get_recent_transactions(user_id):
         return []
 
     finally:
-
         cursor.close()
-        connection.close()
+        if should_close:
+            connection.close()
 
 
 # ==========================
 # CATEGORY SUMMARY
 # ==========================
 
-def get_category_summary(user_id):
+def get_category_summary(user_id, connection=None):
+    should_close = False
+    if connection is None:
+        connection = get_connection()
+        should_close = True
 
-    connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
     try:
@@ -167,18 +176,21 @@ def get_category_summary(user_id):
         return []
 
     finally:
-
         cursor.close()
-        connection.close()
+        if should_close:
+            connection.close()
 
 
 # ==========================
 # MONTHLY TREND
 # ==========================
 
-def get_monthly_expense_trend(user_id):
+def get_monthly_expense_trend(user_id, connection=None):
+    should_close = False
+    if connection is None:
+        connection = get_connection()
+        should_close = True
 
-    connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
     try:
@@ -213,6 +225,6 @@ def get_monthly_expense_trend(user_id):
         return []
 
     finally:
-
         cursor.close()
-        connection.close()
+        if should_close:
+            connection.close()

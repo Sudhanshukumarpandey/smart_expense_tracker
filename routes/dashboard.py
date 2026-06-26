@@ -45,17 +45,23 @@ def dashboard():
     try:
         user_id = session["user_id"]
 
-        # Dashboard Cards
-        stats = get_dashboard_stats(user_id)
+        from utils.database import get_connection
+        conn = get_connection()
 
-        # Recent Transactions
-        transactions = get_recent_transactions(user_id)
+        try:
+            # Dashboard Cards
+            stats = get_dashboard_stats(user_id, connection=conn)
 
-        # Category Summary
-        categories = get_category_summary(user_id)
+            # Recent Transactions
+            transactions = get_recent_transactions(user_id, connection=conn)
 
-        # Monthly Trend
-        monthly_trend = get_monthly_expense_trend(user_id)
+            # Category Summary
+            categories = get_category_summary(user_id, connection=conn)
+
+            # Monthly Trend
+            monthly_trend = get_monthly_expense_trend(user_id, connection=conn)
+        finally:
+            conn.close()
 
         return render_template(
             "dashboard.html",
@@ -68,4 +74,5 @@ def dashboard():
 
     except Exception as e:
         print(f"Dashboard Route Error: {e}")
-        return render_template("500.html"), 500
+        return render_template("500.html"), 500
+
