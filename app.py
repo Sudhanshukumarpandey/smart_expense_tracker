@@ -46,6 +46,16 @@ def create_app():
     @app.route("/db-test")
     def db_test():
         try:
+            import os
+            import urllib.parse as urlparse
+            db_url = os.getenv("DATABASE_URL") or os.getenv("JAWSDB_URL") or os.getenv("CLEARDB_DATABASE_URL")
+            
+            info = "No DATABASE_URL found"
+            if db_url:
+                cleaned_url = db_url.strip('"\'')
+                parsed = urlparse.urlparse(cleaned_url)
+                info = f"Parsed Host: {parsed.hostname}, Port: {parsed.port}, DB Name: {parsed.path[1:] if parsed.path else ''}"
+            
             from utils.database import get_connection
             conn = get_connection()
             cursor = conn.cursor()
@@ -53,10 +63,22 @@ def create_app():
             res = cursor.fetchone()
             cursor.close()
             conn.close()
-            return f"✅ Database connection successful! Result: {res}"
+            return f"✅ Database connection successful!<br>Info: {info}<br>Result: {res}"
         except Exception as e:
             import traceback
-            return f"❌ Database connection failed!<br><pre>{traceback.format_exc()}</pre>", 500
+            info = "Error retrieving DB info"
+            try:
+                import os
+                import urllib.parse as urlparse
+                db_url = os.getenv("DATABASE_URL") or os.getenv("JAWSDB_URL") or os.getenv("CLEARDB_DATABASE_URL")
+                if db_url:
+                    cleaned_url = db_url.strip('"\'')
+                    parsed = urlparse.urlparse(cleaned_url)
+                    info = f"Parsed Host: {parsed.hostname}, Port: {parsed.port}, DB Name: {parsed.path[1:] if parsed.path else ''}"
+            except Exception:
+                pass
+            return f"❌ Database connection failed!<br>Info: {info}<br><pre>{traceback.format_exc()}</pre>", 500
+
 
     # ==========================
     # Error Handlers
