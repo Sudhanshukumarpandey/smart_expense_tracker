@@ -1,0 +1,310 @@
+{% extends "base.html" %} {% block title %} Dashboard | Smart Expense Tracker {%
+endblock %} {% block content %}
+
+<div class="topbar">
+  <div>
+    <h1>Welcome Back, {{ user_name }} 👋</h1>
+
+    <p>Here's a complete overview of your spending activity.</p>
+  </div>
+
+  <div class="user-profile">
+    <i class="fa-solid fa-user"></i>
+  </div>
+</div>
+
+<!-- OVERVIEW CARDS -->
+
+<div class="cards">
+  <!-- Total Expense -->
+
+  <div class="card">
+    <h4>Total Expense</h4>
+
+    <h2>₹{{ stats.total_expense }}</h2>
+  </div>
+
+  <!-- Monthly Expense -->
+
+  <div class="card">
+    <h4>Monthly Expense</h4>
+
+    <h2>₹{{ stats.monthly_expense }}</h2>
+  </div>
+
+  <!-- Monthly Budget -->
+
+  <div class="card">
+    <h4>Monthly Budget</h4>
+
+    <h2>₹{{ stats.monthly_budget }}</h2>
+  </div>
+
+  <!-- Remaining Budget -->
+
+  <div class="card">
+    <h4>Remaining Budget</h4>
+
+    <h2>₹{{ stats.remaining_budget }}</h2>
+  </div>
+
+  <!-- Total Transactions -->
+
+  <div class="card">
+    <h4>Total Transactions</h4>
+
+    <h2>{{ stats.total_transactions }}</h2>
+  </div>
+</div>
+
+<!-- ANALYTICS SECTION -->
+
+<div class="chart-section">
+  <div class="chart-box">
+    <h3>Category Wise Spending</h3>
+
+    <canvas id="categoryChart"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Monthly Trend</h3>
+
+    <canvas id="monthlyChart"></canvas>
+  </div>
+</div>
+
+<!-- SMART INSIGHTS -->
+
+<section class="insights">
+  <h3>Smart Spending Insights</h3>
+
+  <div class="insight-grid">
+    {% if categories and stats.total_expense > 0 %}
+    <div class="insight-card">
+      📊 Top Category: <strong>{{ categories[0].category }}</strong> represents
+      <strong>{{ ((categories[0].total / stats.total_expense) * 100) | round(1) }}%</strong>
+      of total expenses.
+    </div>
+    {% else %}
+    <div class="insight-card">
+      📊 No expenses recorded yet.
+    </div>
+    {% endif %}
+
+    <div class="insight-card">
+      🛍️ You have made a total of
+      <strong>{{ stats.total_transactions }}</strong>
+      transactions.
+    </div>
+
+    <div class="insight-card">
+      💰 Budget utilization reached
+      <strong>{{ stats.budget_used }}%</strong>.
+    </div>
+
+    {% if stats.remaining_budget >= 0 %}
+    <div class="insight-card">
+      ✅ You have <strong>₹{{ stats.remaining_budget }}</strong> remaining in your budget for this month.
+    </div>
+    {% else %}
+    <div class="insight-card">
+      ⚠️ You have exceeded your budget by <strong>₹{{ -stats.remaining_budget }}</strong>!
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- BUDGET PROGRESS -->
+
+<section class="recent-expenses">
+  <h3>Budget Utilization</h3>
+
+  <br />
+
+  <div class="progress-info">
+    <span>Used Budget</span>
+
+    <span>{{ stats.budget_used }}%</span>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" style="width: {{ stats.budget_used }}%;"></div>
+  </div>
+</section>
+
+<br />
+
+<!-- RECENT TRANSACTIONS -->
+
+<section class="recent-expenses">
+  <h3>Recent Transactions</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Expense</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>Payment</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% if transactions %} {% for transaction in transactions %}
+
+      <tr>
+        <td>{{ transaction.expense_name }}</td>
+
+        <td>₹{{ transaction.amount }}</td>
+
+        <td>{{ transaction.category }}</td>
+
+        <td>{{ transaction.expense_date }}</td>
+
+        <td>{{ transaction.payment_method }}</td>
+      </tr>
+
+      {% endfor %} {% else %}
+
+      <tr>
+        <td colspan="5" style="text-align: center; padding: 20px">
+          No recent transactions found.
+        </td>
+      </tr>
+
+      {% endif %}
+    </tbody>
+  </table>
+</section>
+
+<br />
+<!-- CATEGORY BREAKDOWN -->
+
+<section class="recent-expenses">
+  <h3>Category Breakdown</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Total Spend</th>
+        <th>Percentage</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% if categories %}
+        {% for category in categories %}
+        <tr>
+          <td>{{ category.category }}</td>
+          <td>₹{{ category.total }}</td>
+          <td>
+            {% if stats.total_expense > 0 %}
+              {{ ((category.total / stats.total_expense) * 100) | round(1) }}%
+            {% else %}
+              0%
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="3" style="text-align: center; padding: 20px;">No expenses recorded yet.</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</section>
+
+<script>
+  // 1. Category wise spending (Pie Chart)
+  const categoryLabels = [
+      {% for category in categories %}
+          "{{ category.category }}",
+      {% endfor %}
+  ];
+
+  const categoryValues = [
+      {% for category in categories %}
+          {{ category.total }},
+      {% endfor %}
+  ];
+
+  const categoryCtx = document
+      .getElementById("categoryChart")
+      .getContext("2d");
+
+  new Chart(categoryCtx, {
+      type: "pie",
+      data: {
+          labels: categoryLabels,
+          datasets: [{
+              data: categoryValues,
+              backgroundColor: [
+                  "#3B82F6",
+                  "#10B981",
+                  "#F59E0B",
+                  "#EF4444",
+                  "#8B5CF6",
+                  "#06B6D4",
+                  "#EC4899",
+                  "#14B8A6"
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  position: "bottom"
+              }
+          }
+      }
+  });
+
+  // 2. Monthly Trend (Bar Chart)
+  const monthlyLabels = [
+      {% for item in monthly_trend %}
+          "{{ item.month }} {{ item.year }}",
+      {% endfor %}
+  ];
+
+  const monthlyValues = [
+      {% for item in monthly_trend %}
+          {{ item.total }},
+      {% endfor %}
+  ];
+
+  const monthlyCtx = document
+      .getElementById("monthlyChart")
+      .getContext("2d");
+
+  new Chart(monthlyCtx, {
+      type: "bar",
+      data: {
+          labels: monthlyLabels,
+          datasets: [{
+              label: "Expenses",
+              data: monthlyValues,
+              backgroundColor: "#3B82F6",
+              borderRadius: 6
+          }]
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  display: false
+              }
+          },
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+</script>
+{% endblock %}

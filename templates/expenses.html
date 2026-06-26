@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}
+Expense History | Smart Expense Tracker
+{% endblock %}
+
+{% block content %}
+
+<div class="topbar">
+
+    <div>
+
+        <h1>Expense History</h1>
+
+        <p>
+            Search, filter, edit and manage all your expenses.
+        </p>
+
+    </div>
+
+</div>
+
+<!-- SEARCH -->
+
+<section class="recent-expenses">
+
+    <h3>Search & Filter Expenses</h3>
+
+    <br>
+
+    <form class="expense-form" method="GET" action="{{ url_for('expense.expenses') }}">
+
+        <div class="form-group">
+
+            <label>Search Name</label>
+
+            <input
+                type="text"
+                name="q"
+                value="{{ q }}"
+                placeholder="Search by expense name...">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Category</label>
+
+            <select name="category" onchange="this.form.submit()">
+
+                <option value="All Categories" {% if selected_category == 'All Categories' %}selected{% endif %}>All Categories</option>
+                <option value="Food" {% if selected_category == 'Food' %}selected{% endif %}>Food</option>
+                <option value="Travel" {% if selected_category == 'Travel' %}selected{% endif %}>Travel</option>
+                <option value="Shopping" {% if selected_category == 'Shopping' %}selected{% endif %}>Shopping</option>
+                <option value="Bills" {% if selected_category == 'Bills' %}selected{% endif %}>Bills</option>
+                <option value="Entertainment" {% if selected_category == 'Entertainment' %}selected{% endif %}>Entertainment</option>
+                <option value="Education" {% if selected_category == 'Education' %}selected{% endif %}>Education</option>
+                <option value="Health" {% if selected_category == 'Health' %}selected{% endif %}>Health</option>
+                <option value="Other" {% if selected_category == 'Other' %}selected{% endif %}>Other</option>
+
+            </select>
+
+        </div>
+
+        <button type="submit" class="save-btn" style="margin-top: 0; padding: 12px 24px;">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+
+    </form>
+
+</section>
+
+<br>
+
+<!-- EXPENSE TABLE -->
+
+<section class="recent-expenses">
+
+    <h3>Expense Records</h3>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Expense</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Payment</th>
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% if expenses %}
+
+                {% for expense in expenses %}
+
+                <tr>
+
+                    <td>{{ expense.expense_id }}</td>
+
+                    <td>{{ expense.expense_name }}</td>
+
+                    <td>₹{{ expense.amount }}</td>
+
+                    <td>{{ expense.category }}</td>
+
+                    <td>{{ expense.expense_date }}</td>
+
+                    <td>{{ expense.payment_method }}</td>
+
+                    <td>
+
+                        <a href="/edit-expense/{{ expense.expense_id }}">
+
+                            <button class="edit-btn">
+
+                                <i class="fa-solid fa-pen"></i>
+
+                                Edit
+
+                            </button>
+
+                        </a>
+
+                        <a href="/delete-expense/{{ expense.expense_id }}">
+
+                            <button class="delete-btn">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                                Delete
+
+                            </button>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="7" style="text-align:center;padding:30px;">
+
+                        No expenses found.
+
+                    </td>
+
+                </tr>
+
+            {% endif %}
+
+        </tbody>
+
+    </table>
+
+</section>
+
+{% endblock %}

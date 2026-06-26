@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Smart Expense Tracker</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/auth.css') }}">
+
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="left-panel">
+
+            <div class="brand">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <h1>Smart Expense Tracker</h1>
+
+            </div>
+
+            <h2>
+                Create Your Account
+            </h2>
+
+            <p>
+                Start tracking expenses, managing budgets,
+                and discovering spending insights with a
+                modern financial management platform.
+            </p>
+
+            <div class="feature-list">
+
+                <div class="feature">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Visual Spending Analytics</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Monthly Budget Tracking</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>AI-Like Spending Insights</span>
+                </div>
+
+                <div class="feature">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Secure User Authentication</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="right-panel">
+
+            <div class="login-card">
+
+                <h2>Create Account</h2>
+
+                <p>
+                    Join Smart Expense Tracker today
+                </p>
+
+                <form action="/register" method="POST">
+
+                    <div class="input-group">
+
+                        <label>Full Name</label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Enter your full name"
+                            required>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>Email Address</label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Create a strong password"
+                            required>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>Confirm Password</label>
+
+                        <input
+                            type="password"
+                            name="confirm_password"
+                            placeholder="Confirm your password"
+                            required>
+
+                    </div>
+
+                    <button type="submit">
+                        Create Account
+                    </button>
+
+                </form>
+
+                <div class="divider">
+
+                    <span>OR</span>
+
+                </div>
+
+                <p class="register-link">
+
+                    Already have an account?
+
+                    <a href="/login">
+                        Sign In
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+
+        <div class="footer-content">
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

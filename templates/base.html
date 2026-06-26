@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+        Smart Expense Tracker
+        {% endblock %}
+    </title>
+
+    <!-- Google Fonts -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    >
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/dashboard.css') }}"
+    >
+
+    <!-- Chart JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-wallet"></i>
+
+            <span>SmartExpense</span>
+
+        </div>
+
+        <ul class="menu">
+
+            <li class="{% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">
+                <a href="{{ url_for('dashboard.dashboard') }}">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li class="{% if request.endpoint == 'expense.add_expense_page' %}active{% endif %}">
+                <a href="{{ url_for('expense.add_expense_page') }}">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Expense
+                </a>
+            </li>
+
+            <li class="{% if request.endpoint in ['expense.expenses', 'expense.edit_expense'] %}active{% endif %}">
+                <a href="{{ url_for('expense.expenses') }}">
+                    <i class="fa-solid fa-receipt"></i>
+                    Expenses
+                </a>
+            </li>
+
+            <li class="{% if request.endpoint == 'report.reports' %}active{% endif %}">
+                <a href="{{ url_for('report.reports') }}">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Reports
+                </a>
+            </li>
+
+            <li class="{% if request.endpoint == 'budget.budget' %}active{% endif %}">
+                <a href="{{ url_for('budget.budget') }}">
+                    <i class="fa-solid fa-wallet"></i>
+                    Budget
+                </a>
+            </li>
+
+            <li class="{% if request.endpoint == 'settings.settings' %}active{% endif %}">
+                <a href="{{ url_for('settings.settings') }}">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('auth.logout') }}">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+        <!-- Flash Messages -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+        <div class="flash-container">
+
+            {% for category, message in messages %}
+
+            <div class="flash {{ category }}">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+</div>
+
+{% block extra_js %}
+
+{% endblock %}
+
+</body>
+</html>

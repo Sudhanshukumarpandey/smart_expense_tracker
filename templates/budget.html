@@ -1,0 +1,178 @@
+{% extends "base.html" %} {% block title %} Budget Management | Smart Expense
+Tracker {% endblock %} {% block content %}
+
+<div class="topbar">
+  <div>
+    <h1>Budget Management</h1>
+
+    <p>Plan your monthly budget and monitor your spending.</p>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+
+<div class="cards">
+  <div class="card">
+    <h4>Monthly Budget</h4>
+
+    <h2>₹{{ stats.monthly_budget }}</h2>
+  </div>
+
+  <div class="card">
+    <h4>Total Spent</h4>
+
+    <h2>₹{{ stats.total_spent }}</h2>
+  </div>
+
+  <div class="card">
+    <h4>Remaining</h4>
+
+    <h2>₹{{ stats.remaining_budget }}</h2>
+  </div>
+
+  <div class="card">
+    <h4>Budget Used</h4>
+
+    <h2>{{ stats.budget_used }}%</h2>
+  </div>
+</div>
+
+<!-- SET BUDGET -->
+
+<section class="recent-expenses">
+
+    <h3>Set Monthly Budget</h3>
+
+    <br>
+
+    <form method="POST" class="expense-form">
+
+        <div class="form-group">
+
+            <label>Budget Amount</label>
+
+            <input
+                type="number"
+                name="budget_amount"
+                placeholder="Enter Monthly Budget"
+                value="{{ budget.budget_amount if budget else '' }}"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Month</label>
+
+            <select name="budget_month" required>
+
+                {% for month in range(1, 13) %}
+
+                    <option
+                        value="{{ month }}"
+                        {% if month == current_month %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ month }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Year</label>
+
+            <input
+                type="number"
+                name="budget_year"
+                value="{{ current_year }}"
+                required
+            >
+
+        </div>
+
+        <button
+            type="submit"
+            class="save-btn"
+        >
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            Save Budget
+
+        </button>
+
+    </form>
+
+</section>
+
+<br>
+<!-- PROGRESS -->
+
+<section class="recent-expenses">
+  <h3>Budget Utilization</h3>
+
+  <br />
+
+  <div class="progress-info">
+    <span>Used Budget</span>
+
+    <span>{{ stats.budget_used }}%</span>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" style="width: {{ stats.budget_used }}%;"></div>
+  </div>
+</section>
+
+<br />
+
+<!-- HISTORY -->
+
+<section class="recent-expenses">
+  <h3>Budget History</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Budget</th>
+        <th>Spent</th>
+        <th>Remaining</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% if history %}
+        {% for b in history %}
+        <tr>
+          <td>{{ b.month_year }}</td>
+          <td>₹{{ b.budget }}</td>
+          <td>₹{{ b.spent }}</td>
+          <td>
+            {% if b.remaining >= 0 %}
+              ₹{{ b.remaining }}
+            {% else %}
+              -₹{{ -b.remaining }}
+            {% endif %}
+          </td>
+          <td>{{ b.status }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 20px;">No budget history found.</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</section>
+
+{% endblock %}

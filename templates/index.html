@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Expense Tracker</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <i class="fa-solid fa-wallet"></i>
+            <span>SmartExpense</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#insights">Insights</a></li>
+            <li><a href="#reports">Reports</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+
+        <a href="/register" class="btn-primary">
+            Get Started
+        </a>
+
+    </nav>
+
+    <!-- Hero Section -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                Smart Financial Intelligence
+            </span>
+
+            <h1>
+                Track Every Rupee.
+                <br>
+                Understand Every Decision.
+            </h1>
+
+            <p>
+                A modern expense management platform that helps you
+                monitor spending, manage budgets, discover financial
+                patterns, and gain powerful spending insights.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="/register" class="btn-primary">
+                    Start Tracking
+                </a>
+
+                <a href="#features" class="btn-secondary">
+                    Explore Features
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-image">
+
+            <div class="expense-card">
+
+                <h3>Total Expenses</h3>
+                <h2>₹12,450</h2>
+
+                <p>This Month</p>
+
+            </div>
+
+            <div class="expense-card">
+
+                <h3>Budget Left</h3>
+                <h2>₹7,550</h2>
+
+                <p>Available Balance</p>
+
+            </div>
+
+            <div class="expense-card">
+
+                <h3>Food Spending</h3>
+                <h2>40%</h2>
+
+                <p>Top Category</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Features -->
+
+    <section id="features" class="features">
+
+        <div class="section-title">
+
+            <h2>Everything You Need To Manage Expenses</h2>
+
+            <p>
+                Built for individuals who want clarity,
+                control, and intelligent financial insights.
+            </p>
+
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                <h3>Interactive Analytics</h3>
+
+                <p>
+                    Visualize spending patterns through powerful charts
+                    and category-wise analysis.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <h3>Budget Management</h3>
+
+                <p>
+                    Set monthly budgets and monitor utilization
+                    in real time.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-lightbulb"></i>
+
+                <h3>Smart Insights</h3>
+
+                <p>
+                    Discover meaningful spending trends and
+                    financial recommendations automatically.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <h3>Secure Authentication</h3>
+
+                <p>
+                    Protect your financial records with
+                    secure account management.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Statistics -->
+
+    <section class="statistics">
+
+        <div class="stat-card">
+
+            <h2>10K+</h2>
+
+            <p>Expenses Tracked</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>500+</h2>
+
+            <p>Monthly Reports Generated</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>98%</h2>
+
+            <p>Financial Visibility</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>24/7</h2>
+
+            <p>Expense Monitoring</p>
+
+        </div>
+
+    </section>
+
+    <!-- Insights Preview -->
+
+    <section id="insights" class="insights">
+
+        <div class="section-title">
+
+            <h2>Spending Insights That Matter</h2>
+
+        </div>
+
+        <div class="insight-container">
+
+            <div class="insight-box">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                <p>
+                    Shopping expenses increased by 15%
+                    compared to last month.
+                </p>
+            </div>
+
+            <div class="insight-box">
+                <i class="fa-solid fa-bowl-food"></i>
+                <p>
+                    Food accounts for 40% of total spending.
+                </p>
+            </div>
+
+            <div class="insight-box">
+                <i class="fa-solid fa-chart-line"></i>
+                <p>
+                    Budget utilization has reached 82%.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CTA Section -->
+
+    <section class="cta-section">
+
+        <h2>
+            Ready To Take Control Of Your Finances?
+        </h2>
+
+        <p>
+            Join Smart Expense Tracker and transform the way
+            you manage money.
+        </p>
+
+        <a href="/register" class="btn-primary">
+            Create Free Account
+        </a>
+
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <h3>Smart Expense Tracker</h3>
+
+            <p>
+                Track expenses, manage budgets,
+                and make smarter financial decisions.
+            </p>
+
+            <div class="developer-section">
+
+                <a href="https://www.linkedin.com/in/sudhanshu-kumar-pandey?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                   target="_blank"
+                   class="linkedin-btn">
+
+                    <i class="fa-brands fa-linkedin"></i>
+                    Connect on LinkedIn
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                Developed by <strong>Sudhanshu Kumar Pandey</strong>
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>

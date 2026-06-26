@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Expense | Smart Expense Tracker
+{% endblock %}
+
+{% block content %}
+
+<div class="topbar">
+
+    <div>
+
+        <h1>Add New Expense</h1>
+
+        <p>
+            Record and organize your daily expenses.
+        </p>
+
+    </div>
+
+</div>
+
+<div class="expense-form-container">
+
+    <form class="expense-form" method="POST">
+
+        <div class="form-group">
+
+            <label>
+                Expense Name
+            </label>
+
+            <input
+                type="text"
+                name="expense_name"
+                placeholder="Enter expense name"
+                required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Amount
+            </label>
+
+            <input
+                type="number"
+                name="amount"
+                placeholder="Enter amount"
+                required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Category
+            </label>
+
+            <select name="category">
+
+                <option>Food</option>
+                <option>Travel</option>
+                <option>Shopping</option>
+                <option>Bills</option>
+                <option>Entertainment</option>
+                <option>Education</option>
+                <option>Health</option>
+                <option>Other</option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Expense Date
+            </label>
+
+            <input
+                type="date"
+                name="expense_date"
+                required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Payment Method
+            </label>
+
+            <select name="payment_method">
+
+                <option>UPI</option>
+                <option>Cash</option>
+                <option>Credit Card</option>
+                <option>Debit Card</option>
+                <option>Net Banking</option>
+
+            </select>
+
+        </div>
+
+        <button
+            type="submit"
+            class="save-btn">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            Save Expense
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
