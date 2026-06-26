@@ -23,6 +23,8 @@ def get_connection():
             db_url = os.getenv("DATABASE_URL") or os.getenv("JAWSDB_URL") or os.getenv("CLEARDB_DATABASE_URL")
 
             if db_url:
+                # Clean any surrounding quotes (which sometimes happen when users enter quotes on Render)
+                db_url = db_url.strip('"\'')
                 # Parse connection URL: mysql://user:password@host:port/database
                 parsed = urlparse.urlparse(db_url)
                 db_name = parsed.path[1:] if parsed.path else ""
