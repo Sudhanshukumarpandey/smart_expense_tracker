@@ -45,39 +45,39 @@ def create_app():
 
     @app.route("/db-test")
     def db_test():
+        import os
+        import urllib.parse as urlparse
+        import mysql.connector
+        import traceback
+
+        db_url = os.getenv("DATABASE_URL") or os.getenv("JAWSDB_URL") or os.getenv("CLEARDB_DATABASE_URL")
+        if not db_url:
+            return "❌ No DATABASE_URL found in environment!"
+
+        cleaned_url = db_url.strip('"\'')
+        parsed = urlparse.urlparse(cleaned_url)
+        db_name = parsed.path[1:] if parsed.path else ""
+
+        info = f"Parsed Host: {parsed.hostname}, Port: {parsed.port}, DB Name: {db_name}"
+
         try:
-            import os
-            import urllib.parse as urlparse
-            db_url = os.getenv("DATABASE_URL") or os.getenv("JAWSDB_URL") or os.getenv("CLEARDB_DATABASE_URL")
-            
-            info = "No DATABASE_URL found"
-            if db_url:
-                cleaned_url = db_url.strip('"\'')
-                parsed = urlparse.urlparse(cleaned_url)
-                info = f"Parsed Host: {parsed.hostname}, Port: {parsed.port}, DB Name: {parsed.path[1:] if parsed.path else ''}"
-            
-            from utils.database import get_connection
-            conn = get_connection()
+            conn = mysql.connector.connect(
+                host=parsed.hostname,
+                port=parsed.port or 3306,
+                user=parsed.username,
+                password=parsed.password,
+                database=db_name,
+                connection_timeout=5
+            )
             cursor = conn.cursor()
             cursor.execute("SELECT 1")
             res = cursor.fetchone()
             cursor.close()
             conn.close()
-            return f"✅ Database connection successful!<br>Info: {info}<br>Result: {res}"
+            return f"✅ Direct Database connection successful!<br>Info: {info}<br>Result: {res}"
         except Exception as e:
-            import traceback
-            info = "Error retrieving DB info"
-            try:
-                import os
-                import urllib.parse as urlparse
-                db_url = os.getenv("DATABASE_URL") or os.getenv("JAWSDB_URL") or os.getenv("CLEARDB_DATABASE_URL")
-                if db_url:
-                    cleaned_url = db_url.strip('"\'')
-                    parsed = urlparse.urlparse(cleaned_url)
-                    info = f"Parsed Host: {parsed.hostname}, Port: {parsed.port}, DB Name: {parsed.path[1:] if parsed.path else ''}"
-            except Exception:
-                pass
-            return f"❌ Database connection failed!<br>Info: {info}<br><pre>{traceback.format_exc()}</pre>", 500
+            return f"❌ Direct Database connection failed!<br>Info: {info}<br><pre>{traceback.format_exc()}</pre>", 500
+
 
 
     # ==========================
