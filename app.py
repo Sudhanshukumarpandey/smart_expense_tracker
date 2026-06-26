@@ -40,6 +40,25 @@ def create_app():
     app.register_blueprint(settings_bp)
 
     # ==========================
+    # Diagnostic Route
+    # ==========================
+
+    @app.route("/db-test")
+    def db_test():
+        try:
+            from utils.database import get_connection
+            conn = get_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1")
+            res = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            return f"✅ Database connection successful! Result: {res}"
+        except Exception as e:
+            import traceback
+            return f"❌ Database connection failed!<br><pre>{traceback.format_exc()}</pre>", 500
+
+    # ==========================
     # Error Handlers
     # ==========================
 
