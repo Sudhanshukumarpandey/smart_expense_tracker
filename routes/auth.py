@@ -32,11 +32,20 @@ def home():
 # ==========================
 
 @auth_bp.route("/login", methods=["GET", "POST"])
+@auth_bp.route("/login/", methods=["GET", "POST"])
 def login():
 
     # If already logged in
     if session.get("user_id"):
-        return redirect(url_for("dashboard.dashboard"))
+        try:
+            user = get_user_by_id(session["user_id"])
+            if user:
+                return redirect(url_for("dashboard.dashboard"))
+            else:
+                session.clear()
+        except Exception:
+            session.clear()
+
 
     if request.method == "POST":
 
@@ -79,11 +88,20 @@ def login():
 # ==========================
 
 @auth_bp.route("/register", methods=["GET", "POST"])
+@auth_bp.route("/register/", methods=["GET", "POST"])
 def register():
 
     # Prevent logged-in users from registering again
     if session.get("user_id"):
-        return redirect(url_for("dashboard.dashboard"))
+        try:
+            user = get_user_by_id(session["user_id"])
+            if user:
+                return redirect(url_for("dashboard.dashboard"))
+            else:
+                session.clear()
+        except Exception:
+            session.clear()
+
 
     if request.method == "POST":
 

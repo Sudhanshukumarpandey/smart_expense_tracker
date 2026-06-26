@@ -25,6 +25,7 @@ report_bp = Blueprint("report", __name__)
 # ==========================
 
 @report_bp.route("/reports")
+@report_bp.route("/reports/")
 def reports():
 
     # User must be logged in

@@ -26,6 +26,7 @@ budget_bp = Blueprint("budget", __name__)
 # ==========================
 
 @budget_bp.route("/budget", methods=["GET", "POST"])
+@budget_bp.route("/budget/", methods=["GET", "POST"])
 def budget():
 
     # User must be logged in

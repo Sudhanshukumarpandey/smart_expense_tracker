@@ -23,6 +23,7 @@ settings_bp = Blueprint("settings", __name__)
 # ==========================
 
 @settings_bp.route("/settings", methods=["GET", "POST"])
+@settings_bp.route("/settings/", methods=["GET", "POST"])
 def settings():
 
     # User must be logged in

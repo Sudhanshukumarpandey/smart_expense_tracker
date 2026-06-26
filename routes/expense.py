@@ -25,6 +25,7 @@ expense_bp = Blueprint("expense", __name__)
 # ==========================
 
 @expense_bp.route("/add-expense", methods=["GET", "POST"])
+@expense_bp.route("/add-expense/", methods=["GET", "POST"])
 def add_expense_page():
 
     if "user_id" not in session:
@@ -77,6 +78,7 @@ def add_expense_page():
 # ==========================
 
 @expense_bp.route("/expenses")
+@expense_bp.route("/expenses/")
 def expenses():
 
     if "user_id" not in session:
