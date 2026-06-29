@@ -39,6 +39,23 @@ def create_app():
     app.register_blueprint(budget_bp)
     app.register_blueprint(settings_bp)
 
+    # ==========================
+    # Health Check / Keep-Alive Route
+    # ==========================
+
+    @app.route("/health")
+    def health():
+        try:
+            from utils.database import get_connection
+            conn = get_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+            cursor.close()
+            conn.close()
+            return "OK", 200
+        except Exception as e:
+            return f"Database Connection Error: {e}", 500
 
     # ==========================
     # Error Handlers
